@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" >
+	<head>
+		<meta charset="utf-8">
+		<title>Polymer</title>
+		<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+        <link rel="import" href="bower_components/polymer/polymer.html">
+		<link rel="import" href="simple-gallery.html">
+	</head>
+	<body>
+        <simple-gallery >
+            <img data-original="images/img01.jpg" data-index='s1' on-click="load_popup" src="images/thumbnails/img01.jpg" alt="Title 1"> 
+            <img data-original="images/img02.jpg" data-index='s2' on-click="load_popup" src="images/thumbnails/img02.jpg" alt="Title 2">
+            <img data-original="images/img03.jpg" data-index='s3' on-click="load_popup" src="images/thumbnails/img03.jpg" alt="Title 3">
+            <img data-original="images/img04.jpg" data-index='s4' on-click="load_popup" src="images/thumbnails/img04.jpg" alt="Title 4">
+            <img data-original="images/img05.jpg" data-index='s5' on-click="load_popup" src="images/thumbnails/img05.jpg" alt="Title 5">
+        </simple-gallery>		
+	</body>
+</html>

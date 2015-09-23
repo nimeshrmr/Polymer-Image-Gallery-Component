@@ -1,0 +1,188 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="simple-gallery" >
+<style>
+    .modal{
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.9) none repeat scroll 0 0;
+        overflow: hidden;
+        position: fixed;
+        z-index: 999999;
+        top:0;
+        left: 0;
+    }
+    
+    .modal-dialog{
+        max-width: 900px;
+        padding-left: 5%;
+        padding-right: 5%;
+        right: auto;
+        width: auto;
+        margin: 30px auto;
+
+    }
+    
+    .modal-header {
+        border-bottom: 1px solid #e5e5e5;
+        min-height: 16.43px;
+        padding: 15px;
+        background: #fff;
+    }
+    
+    button.close {
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+        border: 0 none;
+        cursor: pointer;
+        padding: 0;
+        float: right;
+    }
+    
+    .modal-body {
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        max-height: 350px;
+    }
+    
+    .modal-body img{
+        width: 100%;
+        height: 100%;
+    }
+        
+    .modal-img{
+        width: 100%;
+        height: 100%;
+    }
+    
+    .btn-default {
+        background-color: #fff;
+        border-color: #ccc;
+        color: #333;
+        border: 1px solid #6d6969;
+        padding: 5px;
+    }
+    
+    #previous{
+        float: left;    
+    }
+    
+    #next{
+        float: right;    
+    }
+
+    #links a{
+        display: block;
+        float: left;
+    }
+
+    .modal-footer{
+        float: left;
+        width: 96%;
+        background: #fff none repeat scroll 0 0;
+        padding: 10px 2%;
+    }
+    
+</style>
+	<script>
+        HTMLImports.whenReady(function () {
+		(function() {
+             var current_index = 0;
+             var image_length = 0;
+            
+	         Polymer({
+                is: "simple-gallery",
+                ready: function() {
+                        var images = Polymer.dom(this).querySelectorAll('img');
+                        var container = this.$.links;
+
+                        for (var img in images) {
+                            images[img].addEventListener('click',this.load_popup);
+                            container.appendChild(images[img]);
+                        }
+                },
+                load_popup: function(e, detail, sender) {
+                    e.preventDefault();
+                    var links = document.getElementById('links');
+                    image_length = links.getElementsByTagName('img').length;
+                        
+                    var image_url = e.target.getAttribute('data-original');
+                    var modalbody = document.getElementsByClassName("modal-body")[0];
+                    var modal_img = modalbody.getElementsByTagName('img')[0];
+                    modal_img.setAttribute("src",image_url);
+                    var modal = document.getElementsByClassName("modal")[0];
+                    modal.style.display = 'block';
+                    
+                    current_index = parseInt(e.target.getAttribute('data-index').replace("s",""));
+                    return false;
+                },
+                next: function () {
+                    
+                  current_index = current_index + 1;
+                  if(current_index == (image_length + 1) ){
+                      current_index = 1;
+                  }
+                  var current_image = document.querySelectorAll("[data-index='s"+current_index+"']");
+                  image_url = current_image[0].getAttribute('data-original');
+                  var modalbody = document.getElementsByClassName("modal-body")[0];
+                  var modal_img = modalbody.getElementsByTagName('img')[0];
+                  modal_img.setAttribute("src",image_url);
+                },
+                prev: function () {
+                  current_index = current_index - 1;
+                  if(current_index == 0 ){
+                      current_index = image_length;
+                  }
+                  var current_image = document.querySelectorAll("[data-index='s"+current_index+"']");
+                  image_url = current_image[0].getAttribute('data-original');
+                  var modalbody = document.getElementsByClassName("modal-body")[0];
+                  var modal_img = modalbody.getElementsByTagName('img')[0];
+                  modal_img.setAttribute("src",image_url);
+                },
+                close: function () {
+                  var modal = document.getElementsByClassName("modal")[0];
+                  modal.style.display = "none";
+                },
+                 
+                });
+		})();
+            
+            });
+	</script>
+    
+    <template>
+ 
+        <div id="gallery-panel" class="gallery-panel">
+            <!-- The container for the modal slides -->
+            <div class="slides">
+                <div id="links" name="links"></div>
+            </div>
+
+
+            <!-- The modal dialog, which will be used to wrap the lightbox content -->
+            <div class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a class="close"><button type="button" class="close" aria-hidden="true" on-click="close" >X</button></a>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body next"><img class='modal-img'  /></div>
+                        <div class="modal-footer">
+                            <button id="previous" type="button" class="btn btn-default pull-left prev" on-click="prev">Previous</button>
+                            <button id="next" type="button" class="btn btn-default next" on-click="next">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </template>
+</dom-module>
+
+
+
+
+
